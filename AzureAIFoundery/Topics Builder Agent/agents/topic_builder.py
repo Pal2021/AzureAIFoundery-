@@ -2,7 +2,9 @@
 import os
 import sys
 from dotenv import load_dotenv
-from services.gemini_client import GeminiClient
+# from services.gemini_client import GeminiClient
+
+from services.azure_client import AzureClient
 
 
 # ✅ MUST load .env before using os.getenv()
@@ -24,8 +26,8 @@ Topics:
 
 
 class TopicBuilderAgent:
-    def __init__(self, api_key: str, llm_model: str):
-        self.llm = GeminiClient(api_key=api_key, llm_model=llm_model)
+    def __init__(self, api_key: str = None, base_url: str = None, model: str = None):
+        self.llm = AzureClient(api_key=api_key, base_url=base_url, model=model)
 
     def run(self, user_input: str) -> str:
         prompt = f"""

@@ -1,5 +1,5 @@
 import os
-from services.gemini_client import GeminiClient
+from services.azure_client import AzureClient
 
 SYSTEM_PROMPT = """
 You are the MS Learn Module Picker Agent, the second step in a sequential workflow.
@@ -29,8 +29,8 @@ Output Format:
 """
 
 class MSLearnModulePickerAgent:
-    def __init__(self, api_key: str, llm_model: str):
-        self.llm = GeminiClient(api_key=api_key, llm_model=llm_model)
+    def __init__(self, api_key: str = None, base_url: str = None, model: str = None):
+        self.llm = AzureClient(api_key=api_key, base_url=base_url, model=model)
 
     def run(self, topics_json: str) -> str:
         prompt = f"""

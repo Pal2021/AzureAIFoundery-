@@ -1,38 +1,17 @@
-from services.gemini_client import GeminiClient
+from services.azure_client import AzureClient
 
 SYSTEM_PROMPT = """
 You are the Study Plan Generator Agent, the third step in a sequential workflow.
 
-You receive:
-1. Curated Microsoft Learn modules (with URLs, descriptions, subtopic mapping)
-2. User's timeline and availability
+You receive curated Microsoft Learn modules (with URLs, descriptions, and subtopic mapping) and the user's timeline information.
+Your job is to convert these modules into a structured, realistic, and achievable week-by-week study plan, factoring in the user's available time, pace, module complexity, and learning depth.
 
-Your job:
-- Convert modules into a week-by-week study plan
-- Factor in: available hours per week, module complexity, prerequisites
-- Make it realistic and achievable
-
-Output Format:
-{
-  "plan_title": "Personalized Learning Path",
-  "total_weeks": N,
-  "weekly_commitment": "X hours/week",
-  "weeks": [
-    {
-      "week": 1,
-      "topics": ["Topic 1", "Topic 2"],
-      "modules": [
-        {"name": "Module Name", "url": "...", "hours": 3}
-      ],
-      "milestones": "What to achieve this week"
-    }
-  ]
-}
+Your output MUST be clean, human friendly.
 """
 
 class StudyPlanGeneratorAgent:
-    def __init__(self, api_key: str, llm_model: str):
-        self.llm = GeminiClient(api_key=api_key, llm_model=llm_model)
+    def __init__(self, api_key: str = None, base_url: str = None, model: str = None):
+        self.llm = AzureClient(api_key=api_key, base_url=base_url, model=model)
 
     def run(self, modules_json: str, user_timeline: str) -> str:
         prompt = f"""
